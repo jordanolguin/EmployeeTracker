@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+require("dotenv").config();
 const mysql = require("mysql2");
 
 const PORT = process.env.PORT || 3001;
@@ -28,43 +29,47 @@ function init() {
         name: "menuChoice",
         message: "What would you like to do?",
         choices: [
-          "View All Employees",
-          "Add Employee",
-          "Update Employee Role",
-          "View All Roles",
-          "Add Role",
-          "View All Departments",
-          "Add Department",
-          "Exit",
+          {
+            name: "View All Employees",
+            value: "VIEW_EMPLOYEES",
+          },
+          //   "View All Employees",
+          //   "Add Employee",
+          //   "Update Employee Role",
+          //   "View All Roles",
+          //   "Add Role",
+          //   "View All Departments",
+          //   "Add Department",
+          //   "Exit",
         ],
       },
     ])
     .then((answers) => {
       switch (answers.menuChoice) {
-        case "View All Employees":
+        case "VIEW_EMPLOYEES":
           viewAllEmployees();
           break;
-        case "Add Employee":
-          addEmployee();
-          break;
-        case "Update Employee Role":
-          updateEmployeeRole();
-          break;
-        case "View All Roles":
-          viewAllRoles();
-          break;
-        case "Add Role":
-          addRole();
-          break;
-        case "View All Departments":
-          viewAllDepartments();
-          break;
-        case "Add Department":
-          addDepartment();
-          break;
-        case "Exit":
-          exit();
-          break;
+        // case "Add Employee":
+        //   addEmployee();
+        //   break;
+        // case "Update Employee Role":
+        //   updateEmployeeRole();
+        //   break;
+        // case "View All Roles":
+        //   viewAllRoles();
+        //   break;
+        // case "Add Role":
+        //   addRole();
+        //   break;
+        // case "View All Departments":
+        //   viewAllDepartments();
+        //   break;
+        // case "Add Department":
+        //   addDepartment();
+        //   break;
+        // case "Exit":
+        //   exit();
+        //   break;
         default:
           console.log("Invalid choice. Please try again.");
           init();
@@ -76,6 +81,7 @@ function init() {
 function viewAllEmployees() {
   // Execute a db.query to fetch all employees
   // Display the employee data in a formatted table
+  //console.table
   // Call init() to prompt the user with the menu options again
 }
 
