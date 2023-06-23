@@ -185,6 +185,10 @@ function addDepartment() {
     });
 }
 
-function exit() {}
+function exit() {
+  console.log("Goodbye!");
+  db.end();
+  process.exit();
+}
 
 init();
