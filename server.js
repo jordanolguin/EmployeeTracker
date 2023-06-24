@@ -159,7 +159,7 @@ function addEmployee() {
 
             db.query(sql, values, (err, result) => {
               if (err) {
-                console.error("Error adding employee to the database:", err);
+                console.error("Error adding employee to the database: ", err);
                 return;
               }
               console.log("Employee added successfully!");
@@ -181,7 +181,7 @@ function addEmployee() {
                 db.query(sql, values, (err, result) => {
                   if (err) {
                     console.error(
-                      "Error adding employee to the database:",
+                      "Error adding employee to the database: ",
                       err
                     );
                     return;
@@ -231,8 +231,29 @@ function addRole() {
       },
     ])
     .then((answers) => {
-      //execute db.query to add the role with the provided title, salary, and department
-      //call init() to prompt the menu options again
+      const { roleTitle, roleSalary, roleDepartment } = answers;
+      db.query(
+        "SELECT id FROM department WHERE name = ?",
+        roleDepartment,
+        (err, departmentResults) => {
+          if (err) {
+            console.error("Error retrieving department ID: ", err);
+            return;
+          }
+          const departmentId = departmentResults[0].id;
+          const sql =
+            "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
+          const values = [roleTitle, roleSalary, departmentId];
+          db.query(sql, values, (err, result) => {
+            if (err) {
+              console.error("Error adding role to the database: ", err);
+              return;
+            }
+            console.log("Role added successfully!");
+            init();
+          });
+        }
+      );
     });
 }
 
@@ -257,8 +278,17 @@ function addDepartment() {
       },
     ])
     .then((answers) => {
-      //execute db.query to add the department with the provided name
-      //call init() to prompt the menu options again
+      const departmentName = answers.departmentName;
+      const sql = "INSERT INTO department (name) VALUES (?)";
+      const values = [departmentName];
+      db.query(sql, values, (err, result) => {
+        if (err) {
+          console.error("Error adding department to the database: ", err);
+          return;
+        }
+        console.log("Department added successfully!");
+        init();
+      });
     });
 }
 
