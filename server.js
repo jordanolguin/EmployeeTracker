@@ -197,7 +197,68 @@ function addEmployee() {
     });
 }
 
-function updateEmployeeRole() {}
+function updateEmployeeRole() {
+  const sql = "SELECT * FROM employee";
+  db.query(sql, (err, employeeResults) => {
+    if (err) {
+      console.error("Error retrieving employees:", err);
+      return;
+    }
+
+    const employees = employeeResults.map((employee) => {
+      return {
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+      };
+    });
+
+    const roleSql = "SELECT * FROM role";
+    db.query(roleSql, (err, roleResults) => {
+      if (err) {
+        console.error("Error retrieving roles:", err);
+        return;
+      }
+
+      const roles = roleResults.map((role) => {
+        return {
+          name: role.title,
+          value: role.id,
+        };
+      });
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employeeId",
+            message: "Which employees role would you like to update?",
+            choices: employees,
+          },
+          {
+            type: "list",
+            name: "roleId",
+            message:
+              "Which role do you want to assign to the selected employee?",
+            choices: roles,
+          },
+        ])
+        .then((answers) => {
+          const employeeId = answers.employeeId;
+          const roleId = answers.roleId;
+          const updateSql = "UPDATE employee SET role_id = ? WHERE id = ?";
+          const updateValues = [roleId, employeeId];
+          db.query(updateSql, updateValues, (err, result) => {
+            if (err) {
+              console.error("Error updating employee role:", err);
+              return;
+            }
+            console.log("Employee role updated successfully!");
+            init();
+          });
+        });
+    });
+  });
+}
 
 function viewAllRoles() {
   db.query("SELECT * FROM role", (err, results) => {
