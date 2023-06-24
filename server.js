@@ -91,7 +91,7 @@ function init() {
 }
 
 function viewAllEmployees() {
-  db.query("SELECT * FROM employees", (err, results) => {
+  db.query("SELECT * FROM employee", (err, results) => {
     if (err) {
       console.error("Error retrieving employees:", err);
       return;
@@ -155,9 +155,14 @@ function addEmployee() {
 function updateEmployeeRole() {}
 
 function viewAllRoles() {
-  // Execute a db.query to fetch all roles
-  // Display the role data in a formatted table
-  // Call init() to prompt the user with the menu options again
+  db.query("SELECT * FROM role", (err, results) => {
+    if (err) {
+      console.error("Error retrieving employees:", err);
+      return;
+    }
+    console.table(results);
+    init();
+  });
 }
 
 function addRole() {
@@ -187,9 +192,14 @@ function addRole() {
 }
 
 function viewAllDepartments() {
-  // Execute a db.query to fetch all departments
-  // Display the department data in a formatted table
-  // Call init() to prompt the user with the menu options again
+  db.query("SELECT * FROM department", (err, results) => {
+    if (err) {
+      console.error("Error retrieving employees:", err);
+      return;
+    }
+    console.table(results);
+    init();
+  });
 }
 
 function addDepartment() {
