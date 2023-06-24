@@ -1,16 +1,8 @@
 const inquirer = require("inquirer");
-require("dotenv").config();
-const mysql = require("mysql2");
+
+const db = require("./config/connection");
 
 const PORT = process.env.PORT || 3001;
-
-const db = mysql.createConnection({
-  host: "127.0.0.1", // for Mac users
-  // host: "localhost", // for Windows users
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
 
 db.connect((err) => {
   if (err) {
@@ -99,10 +91,14 @@ function init() {
 }
 
 function viewAllEmployees() {
-  // Execute a db.query to fetch all employees
-  // Display the employee data in a formatted table
-  //console.table
-  // Call init() to prompt the user with the menu options again
+  db.query("SELECT * FROM employees", (err, results) => {
+    if (err) {
+      console.error("Error retrieving employees:", err);
+      return;
+    }
+    console.table(results);
+    init();
+  });
 }
 
 function addEmployee() {
