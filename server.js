@@ -2,6 +2,18 @@ const inquirer = require("inquirer");
 const asciiart = require("asciiart-logo");
 const db = require("./config/connection");
 
+//asciiart-logo
+const coolTitleArt = asciiart({
+  name: "Employee Manager",
+  font: "Doom",
+  lineChars: 10,
+  padding: 2,
+  margin: 2,
+  borderColor: "cyan",
+  logoColor: "cyan",
+  textColor: "cyan",
+}).render();
+
 const PORT = process.env.PORT || 3001;
 
 db.connect((err) => {
@@ -13,6 +25,7 @@ db.connect((err) => {
   console.log(`Using PORT: ${PORT}`);
 });
 
+//main menu options
 function init() {
   inquirer
     .prompt([
@@ -90,6 +103,7 @@ function init() {
     });
 }
 
+//respective functions from main menu options
 function viewAllEmployees() {
   db.query("SELECT * FROM employee", (err, results) => {
     if (err) {
@@ -354,17 +368,6 @@ function exit() {
   db.end();
   process.exit();
 }
-
-const coolTitleArt = asciiart({
-  name: "Employee Manager",
-  font: "Doom",
-  lineChars: 10,
-  padding: 2,
-  margin: 2,
-  borderColor: "cyan",
-  logoColor: "cyan",
-  textColor: "cyan",
-}).render();
 
 console.log(coolTitleArt);
 init();
