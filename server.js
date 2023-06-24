@@ -76,7 +76,7 @@ function init() {
         case "VIEW_ALL_DEPARTMENTS":
           viewAllDepartments();
           break;
-        case "Add Department":
+        case "ADD_DEPARTMENT":
           addDepartment();
           break;
         case "EXIT":
@@ -147,8 +147,53 @@ function addEmployee() {
       },
     ])
     .then((answers) => {
-      //execute db.query to add the employee with the provided info
-      //call init() to prompt the menu options again
+      const roleName = answers.employeeDepartment;
+      const managerName = answers.employeeManager;
+      db.query(
+        `SELECT id FROM role WHERE title = '${roleName}'`,
+        (err, roleResults) => {
+          const roleId = roleResults[0].id;
+          if (managerName === "None") {
+            const sql = `INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)`;
+            const values = [answers.firstName, answers.lastName, roleId];
+
+            db.query(sql, values, (err, result) => {
+              if (err) {
+                console.error("Error adding employee to the database:", err);
+                return;
+              }
+              console.log("Employee added successfully!");
+              init();
+            });
+          } else {
+            db.query(
+              `SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${managerName}'`,
+              (err, managerResults) => {
+                const managerId = managerResults[0].id;
+                const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+                const values = [
+                  answers.firstName,
+                  answers.lastName,
+                  roleId,
+                  managerId,
+                ];
+
+                db.query(sql, values, (err, result) => {
+                  if (err) {
+                    console.error(
+                      "Error adding employee to the database:",
+                      err
+                    );
+                    return;
+                  }
+                  console.log("Employee added successfully!");
+                  init();
+                });
+              }
+            );
+          }
+        }
+      );
     });
 }
 
