@@ -33,14 +33,34 @@ function init() {
             name: "View All Employees",
             value: "VIEW_EMPLOYEES",
           },
-          //   "View All Employees",
-          //   "Add Employee",
-          //   "Update Employee Role",
-          //   "View All Roles",
-          //   "Add Role",
-          //   "View All Departments",
-          //   "Add Department",
-          //   "Exit",
+          {
+            name: "Add Employee",
+            value: "ADD_EMPLOYEE",
+          },
+          {
+            name: "Update Employee Role",
+            value: "UPDATE_EMPLOYEE_ROLE",
+          },
+          {
+            name: "View All Roles",
+            value: "VIEW_ALL_ROLES",
+          },
+          {
+            name: "Add Role",
+            value: "ADD_ROLE",
+          },
+          {
+            name: "View All Departments",
+            value: "VIEW_ALL_DEPARTMENTS",
+          },
+          {
+            name: "Add Department",
+            value: "ADD_DEPARTMENT",
+          },
+          {
+            name: "Exit",
+            value: "EXIT",
+          },
         ],
       },
     ])
@@ -49,27 +69,27 @@ function init() {
         case "VIEW_EMPLOYEES":
           viewAllEmployees();
           break;
-        // case "Add Employee":
-        //   addEmployee();
-        //   break;
-        // case "Update Employee Role":
-        //   updateEmployeeRole();
-        //   break;
-        // case "View All Roles":
-        //   viewAllRoles();
-        //   break;
-        // case "Add Role":
-        //   addRole();
-        //   break;
-        // case "View All Departments":
-        //   viewAllDepartments();
-        //   break;
-        // case "Add Department":
-        //   addDepartment();
-        //   break;
-        // case "Exit":
-        //   exit();
-        //   break;
+        case "ADD_EMPLOYEE":
+          addEmployee();
+          break;
+        case "UPDATE_EMPLOYEE_ROLE":
+          updateEmployeeRole();
+          break;
+        case "VIEW_ALL_ROLES":
+          viewAllRoles();
+          break;
+        case "ADD_ROLE":
+          addRole();
+          break;
+        case "VIEW_ALL_DEPARTMENTS":
+          viewAllDepartments();
+          break;
+        case "Add Department":
+          addDepartment();
+          break;
+        case "EXIT":
+          exit();
+          break;
         default:
           console.log("Invalid choice. Please try again.");
           init();
