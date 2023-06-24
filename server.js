@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-
+const asciiart = require("asciiart-logo");
 const db = require("./config/connection");
 
 const PORT = process.env.PORT || 3001;
@@ -201,37 +201,33 @@ function updateEmployeeRole() {
   const sql = "SELECT * FROM employee";
   db.query(sql, (err, employeeResults) => {
     if (err) {
-      console.error("Error retrieving employees:", err);
+      console.error("Error retrieving employees: ", err);
       return;
     }
-
     const employees = employeeResults.map((employee) => {
       return {
         name: `${employee.first_name} ${employee.last_name}`,
         value: employee.id,
       };
     });
-
     const roleSql = "SELECT * FROM role";
     db.query(roleSql, (err, roleResults) => {
       if (err) {
-        console.error("Error retrieving roles:", err);
+        console.error("Error retrieving roles: ", err);
         return;
       }
-
       const roles = roleResults.map((role) => {
         return {
           name: role.title,
           value: role.id,
         };
       });
-
       inquirer
         .prompt([
           {
             type: "list",
             name: "employeeId",
-            message: "Which employees role would you like to update?",
+            message: "Which employee's role would you like to update?",
             choices: employees,
           },
           {
@@ -249,7 +245,7 @@ function updateEmployeeRole() {
           const updateValues = [roleId, employeeId];
           db.query(updateSql, updateValues, (err, result) => {
             if (err) {
-              console.error("Error updating employee role:", err);
+              console.error("Error updating employee role: ", err);
               return;
             }
             console.log("Employee role updated successfully!");
@@ -359,4 +355,16 @@ function exit() {
   process.exit();
 }
 
+const coolTitleArt = asciiart({
+  name: "Employee Manager",
+  font: "Doom",
+  lineChars: 10,
+  padding: 2,
+  margin: 2,
+  borderColor: "cyan",
+  logoColor: "cyan",
+  textColor: "cyan",
+}).render();
+
+console.log(coolTitleArt);
 init();
