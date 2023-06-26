@@ -207,17 +207,38 @@ function addEmployee() {
     });
 }
 
-// function viewEmployeeByManager() {
-//   inquirer.prompt([
-//     {
-//       type: "list",
-//       name: "managerId",
-//       message: "Select a manager to view their employees",
-//       choices: [],
-//     },
-//   ])
-//   .then((answers) => )
-// }
+function viewEmployeeByManager() {
+  const sql = `SELECT CONCAT (first_name, " ", last_name) AS name, id AS value 
+  FROM employee_tracker_db.employee
+  WHERE manager_id IS NULL;`;
+  db.query(sql, (err, employeeResults) => {
+    if (err) {
+      console.error("Error retrieving employees: ", err);
+      return;
+    }
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "managerId",
+          message: "Select a manager to view their employees",
+          choices: employeeResults,
+        },
+      ])
+      .then((answers) => {
+        const sql2 = `SELECT * FROM employee_tracker_db.employee
+        WHERE manager_id = ${answers.managerId};`;
+        db.query(sql2, (err, results) => {
+          if (err) {
+            console.error("Error retrieving employees: ", err);
+            return;
+          }
+          console.table(results);
+          init();
+        });
+      });
+  });
+}
 
 function updateEmployeeRole() {
   const sql = "SELECT * FROM employee";
@@ -281,7 +302,7 @@ function updateEmployeeRole() {
 function viewAllRoles() {
   db.query("SELECT * FROM role", (err, results) => {
     if (err) {
-      console.error("Error retrieving employees:", err);
+      console.error("Error retrieving employees: ", err);
       return;
     }
     console.table(results);
