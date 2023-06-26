@@ -14,17 +14,6 @@ const coolTitleArt = asciiart({
   textColor: "cyan",
 }).render();
 
-const PORT = process.env.PORT || 3001;
-
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the database: ", err);
-    return;
-  }
-  console.log("Connected to the employee_tracker_db database.");
-  console.log(`Using PORT: ${PORT}`);
-});
-
 //main menu options
 function init() {
   inquirer
@@ -41,6 +30,10 @@ function init() {
           {
             name: "Add Employee",
             value: "ADD_EMPLOYEE",
+          },
+          {
+            name: "View Employees by Manager",
+            value: "VIEW_EMPLOYEES_BY_MANAGER",
           },
           {
             name: "Update Employee Role",
@@ -76,6 +69,9 @@ function init() {
           break;
         case "ADD_EMPLOYEE":
           addEmployee();
+          break;
+        case "VIEW_EMPLOYEES_BY_MANAGER":
+          viewEmployeeByManager();
           break;
         case "UPDATE_EMPLOYEE_ROLE":
           updateEmployeeRole();
@@ -210,6 +206,18 @@ function addEmployee() {
       );
     });
 }
+
+// function viewEmployeeByManager() {
+//   inquirer.prompt([
+//     {
+//       type: "list",
+//       name: "managerId",
+//       message: "Select a manager to view their employees",
+//       choices: [],
+//     },
+//   ])
+//   .then((answers) => )
+// }
 
 function updateEmployeeRole() {
   const sql = "SELECT * FROM employee";
